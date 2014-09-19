@@ -3,11 +3,6 @@ import requests
 from threading import Thread, BoundedSemaphore
 from pymongo import MongoClient
 
-c = MongoClient()
-db = c.Steam
-db.games.drop()
-api_url = 'http://store.steampowered.com/api/'
-
 
 def get_json(url):
     try:
@@ -57,6 +52,9 @@ def consigue(game):
     finally:
         pool_sema.release()
 
+c = MongoClient()
+db = c.Steam
+db.games.drop()
 url = 'http://api.steampowered.com/ISteamApps/GetAppList/v2?format=json'
 lista = get_json(url)
 pool_sema = BoundedSemaphore(100)
